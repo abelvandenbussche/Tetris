@@ -35,11 +35,11 @@ namespace Tetris
             {
                 position = this.Position;
             }
-            using (Pen pen = new Pen(PieceColor))
+            using (Brush brush = new SolidBrush(PieceColor))
             {
                 foreach(Tuple<int, int> component in Components)
                 {
-                    graphics.DrawRectangle(pen, new Rectangle(position.Item1 + component.Item1, position.Item2 + component.Item2, 10, 10));
+                    graphics.FillRectangle(brush, new Rectangle(position.Item1 + component.Item1, position.Item2 + component.Item2, 10, 10));
                 }
             }
         }
