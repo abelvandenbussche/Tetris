@@ -36,9 +36,10 @@
             // 
             PreviewPictureBox.Location = new Point(39, 59);
             PreviewPictureBox.Name = "PreviewPictureBox";
-            PreviewPictureBox.Size = new Size(100, 100);
+            PreviewPictureBox.Size = new Size(409, 253);
             PreviewPictureBox.TabIndex = 0;
             PreviewPictureBox.TabStop = false;
+            PreviewPictureBox.Paint += PreviewPictureBox_Paint;
             // 
             // Form1
             // 

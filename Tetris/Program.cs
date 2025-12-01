@@ -29,14 +29,19 @@ namespace Tetris
         {
             return (TetrisPiece)this.MemberwiseClone();
         }
-        public void DrawSelf(PictureBox surface, Tuple<int, int> position = null)
+        public void DrawSelf(Graphics graphics, Tuple<int, int> position = null)
         {
             if (position == null)
             {
                 position = this.Position;
             }
-            Graphics e = surface.CreateGraphics();
-            
+            using (Pen pen = new Pen(PieceColor))
+            {
+                foreach(Tuple<int, int> component in Components)
+                {
+                    graphics.DrawRectangle(pen, new Rectangle(position.Item1 + component.Item1, position.Item2 + component.Item2, 10, 10));
+                }
+            }
         }
     }
 }
