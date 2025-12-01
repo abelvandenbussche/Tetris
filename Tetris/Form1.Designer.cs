@@ -29,32 +29,60 @@
         private void InitializeComponent()
         {
             PreviewPictureBox = new PictureBox();
+            MainPictureBox = new PictureBox();
+            HoldPictureBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)MainPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)HoldPictureBox).BeginInit();
             SuspendLayout();
             // 
             // PreviewPictureBox
             // 
-            PreviewPictureBox.Location = new Point(39, 59);
+            PreviewPictureBox.Location = new Point(400, 12);
+            PreviewPictureBox.Margin = new Padding(2);
             PreviewPictureBox.Name = "PreviewPictureBox";
-            PreviewPictureBox.Size = new Size(409, 253);
+            PreviewPictureBox.Size = new Size(75, 150);
             PreviewPictureBox.TabIndex = 0;
             PreviewPictureBox.TabStop = false;
             PreviewPictureBox.Paint += PreviewPictureBox_Paint;
             // 
+            // MainPictureBox
+            // 
+            MainPictureBox.Location = new Point(159, 12);
+            MainPictureBox.Name = "MainPictureBox";
+            MainPictureBox.Size = new Size(191, 246);
+            MainPictureBox.TabIndex = 1;
+            MainPictureBox.TabStop = false;
+            // 
+            // HoldPictureBox
+            // 
+            HoldPictureBox.Location = new Point(34, 40);
+            HoldPictureBox.Name = "HoldPictureBox";
+            HoldPictureBox.Size = new Size(75, 75);
+            HoldPictureBox.TabIndex = 2;
+            HoldPictureBox.TabStop = false;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(560, 270);
+            Controls.Add(HoldPictureBox);
+            Controls.Add(MainPictureBox);
             Controls.Add(PreviewPictureBox);
+            Margin = new Padding(2);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)MainPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)HoldPictureBox).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private PictureBox PreviewPictureBox;
+        private PictureBox MainPictureBox;
+        private PictureBox HoldPictureBox;
     }
 }

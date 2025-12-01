@@ -67,8 +67,8 @@ namespace Tetris
         public Form1()
         {
             InitializeComponent();
-            //drawing some shit
         }
+        //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
             pieceTemplates[0].DrawSelf(e.Graphics, new Tuple<int, int>(50, 50));
