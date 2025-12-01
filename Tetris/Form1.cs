@@ -3,7 +3,7 @@ namespace Tetris
     public partial class Form1 : Form
     {
         //TODO: implement scale properly
-        int scale = 10;
+        const int scale = 10;
         //templates for the tetris pieces
         List<TetrisPiece> pieceTemplates = new List<TetrisPiece>()
         {
