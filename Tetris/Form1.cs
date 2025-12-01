@@ -58,6 +58,7 @@ namespace Tetris
         public Form1()
         {
             InitializeComponent();
+            //drawing some shit
         }
     }
 }

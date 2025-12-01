@@ -16,19 +16,27 @@ namespace Tetris
     }
     public class TetrisPiece
     {
-        public Tuple<int, int> Position;
+        public Tuple<int, int> Position = new Tuple<int, int>(0, 0);
         public List<Tuple<int, int>> Components;
         public Color PieceColor;
 
         public TetrisPiece(List<Tuple<int, int>> components, Color color)
         {
-            Position = new Tuple<int, int>(0, 0);
             Components = components;
             PieceColor = color;
         }
         public TetrisPiece ShallowCopy()
         {
             return (TetrisPiece)this.MemberwiseClone();
+        }
+        public void DrawSelf(PictureBox surface, Tuple<int, int> position = null)
+        {
+            if (position == null)
+            {
+                position = this.Position;
+            }
+            Graphics e = surface.CreateGraphics();
+            
         }
     }
 }

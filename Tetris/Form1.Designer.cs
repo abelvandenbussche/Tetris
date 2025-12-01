@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            PreviewPictureBox = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).BeginInit();
+            SuspendLayout();
+            // 
+            // PreviewPictureBox
+            // 
+            PreviewPictureBox.Location = new Point(39, 59);
+            PreviewPictureBox.Name = "PreviewPictureBox";
+            PreviewPictureBox.Size = new Size(100, 100);
+            PreviewPictureBox.TabIndex = 0;
+            PreviewPictureBox.TabStop = false;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(PreviewPictureBox);
+            Name = "Form1";
+            Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private PictureBox PreviewPictureBox;
     }
 }
