@@ -1,3 +1,5 @@
+using System.CodeDom.Compiler;
+
 namespace Tetris
 {
     public class TetrisPiece
@@ -29,6 +31,34 @@ namespace Tetris
                 }
                 graphics.FillRectangle(Brushes.Black, new Rectangle(position.Item1 + this.Center.Item1 - 2, position.Item2 + this.Center.Item2 - 2, 4, 4));
             }
+        }
+        public bool Fall(List<TetrisPiece> pieces)
+        {
+            bool landed = false;
+            for(int index = 0; index < Components.Count; index++)
+            {
+                Tuple<int, int> pos = Components[index];
+                pos = new(pos.Item1, pos.Item2 + 10);
+
+                //checking if there is a piece under it now
+                foreach(TetrisPiece piece in pieces)
+                {
+                    //checking if the piece is not the current piece
+                    if (piece.Equals(this))
+                    {
+                        continue;
+                    }
+
+                    foreach(Tuple<int, int> otherPos in piece.Components)
+                    {
+                        if (otherPos.Item1 == pos.Item1 &&  otherPos.Item2 == pos.Item2 + 10)
+                        {
+                            landed = true;
+                        }
+                    }
+                }
+            }
+            return landed;
         }
     }
 }

@@ -1,11 +1,27 @@
+using System.Drawing.Drawing2D;
+using System.Timers;
+
 namespace Tetris
 {
     public partial class Form1 : Form
     {
-        //TODO: implement scale properly
         const int scale = 10;
+        TetrisPiece currentPiece;
+        List<TetrisPiece> pieces = new List<TetrisPiece>();
+
+        private void setupGameLoop()
+        {
+
+            System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
+            const int updateInterval = 16;
+            frameTimer.Interval = updateInterval;
+            frameTimer.Tick += GameLoop;
+        }
+
+
         //templates for the tetris pieces
         List<TetrisPiece> pieceTemplates = new List<TetrisPiece>()
+        
         {
             //straight piece
             new TetrisPiece(new List<Tuple<int, int>>()
@@ -94,6 +110,31 @@ namespace Tetris
                     {
                         g.DrawRectangle(p, new(x*scale, y*scale, 10 * scale, 10 * scale));
                     }
+                }
+            }
+        }
+
+        private void SpawnPiece(int piece)
+        {
+            //adding it to the list
+            TetrisPiece newPiece = pieceTemplates[piece].ShallowCopy();
+            newPiece.Position = new(10, 0);
+            pieces.Add(newPiece);
+        }
+        
+        private void GameLoop(object sender, EventArgs e)
+        {
+            //moving the current piece
+            paintScene();
+        }
+
+        private void paintScene()
+        {
+            foreach(TetrisPiece piece in pieces)
+            {
+                using (Graphics g = MainPictureBox.CreateGraphics())
+                {
+                    piece.DrawSelf(g);
                 }
             }
         }
