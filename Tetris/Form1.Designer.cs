@@ -53,6 +53,7 @@
             MainPictureBox.Size = new Size(191, 246);
             MainPictureBox.TabIndex = 1;
             MainPictureBox.TabStop = false;
+            MainPictureBox.Paint += MainPictureBox_Paint;
             // 
             // HoldPictureBox
             // 

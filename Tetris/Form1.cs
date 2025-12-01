@@ -3,7 +3,7 @@ namespace Tetris
     public partial class Form1 : Form
     {
         //TODO: implement scale properly
-        int scale = 2;
+        int scale = 10;
         //templates for the tetris pieces
         List<TetrisPiece> pieceTemplates = new List<TetrisPiece>()
         {
@@ -67,17 +67,35 @@ namespace Tetris
         public Form1()
         {
             InitializeComponent();
+            //setting the components to the right size
+            MainPictureBox.Size = new Size(10*10*scale, 10*20*scale);
         }
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            pieceTemplates[0].DrawSelf(e.Graphics, new Tuple<int, int>(50, 50));
-            pieceTemplates[1].DrawSelf(e.Graphics, new Tuple<int, int>(50, 80));
-            pieceTemplates[2].DrawSelf(e.Graphics, new Tuple<int, int>(50, 110));
-            pieceTemplates[3].DrawSelf(e.Graphics, new Tuple<int, int>(50, 140));
-            pieceTemplates[4].DrawSelf(e.Graphics, new Tuple<int, int>(50, 170));
-            pieceTemplates[5].DrawSelf(e.Graphics, new Tuple<int, int>(50, 200));
-            pieceTemplates[6].DrawSelf(e.Graphics, new Tuple<int, int>(50, 230));
+            pieceTemplates[0].DrawSelf(e.Graphics, new Tuple<int, int>(20, 50));
+            pieceTemplates[1].DrawSelf(e.Graphics, new Tuple<int, int>(20, 80));
+            pieceTemplates[2].DrawSelf(e.Graphics, new Tuple<int, int>(20, 110));
+            pieceTemplates[3].DrawSelf(e.Graphics, new Tuple<int, int>(20, 140));
+            pieceTemplates[4].DrawSelf(e.Graphics, new Tuple<int, int>(20, 170));
+            pieceTemplates[5].DrawSelf(e.Graphics, new Tuple<int, int>(20, 200));
+            pieceTemplates[6].DrawSelf(e.Graphics, new Tuple<int, int>(20, 230));
+        }
+
+        private void MainPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            //painting the grid
+            Graphics g = e.Graphics;
+            using(Pen p = new(Color.Black))
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    for (int x = 0; x < 10; x++)
+                    {
+                        g.DrawRectangle(p, new(x*scale, y*scale, 10 * scale, 10 * scale));
+                    }
+                }
+            }
         }
     }
 }
