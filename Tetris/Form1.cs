@@ -13,7 +13,7 @@ namespace Tetris
         {
 
             System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
-            const int updateInterval = 64;
+            const int updateInterval = 256;
             frameTimer.Interval = updateInterval;
             frameTimer.Tick += GameLoop;
             frameTimer.Start();
@@ -123,7 +123,7 @@ namespace Tetris
         {
             //adding it to the list
             TetrisPiece newPiece = pieceTemplates[piece].ShallowCopy();
-            newPiece.Position = new(40, 50);
+            newPiece.Position = new(50, -10);
             return newPiece;
         }
 
@@ -132,12 +132,12 @@ namespace Tetris
             MainPictureBox.Invalidate();
             //moving the current piece
             MainPictureBox.Invalidate();
-            //if (currentPiece.Fall(pieces))
-            //{
-            //    //the piece has landed
-            //    pieces.Add(currentPiece);
-            //    currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
-            //}
+            if (currentPiece.Fall(pieces))
+            {
+                //the piece has landed
+                pieces.Add(currentPiece);
+                currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+            }
         }
         private void paintScene(Graphics g)
         {
@@ -152,10 +152,25 @@ namespace Tetris
             //movement
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
+                //checking if there is place to move the piece
+                foreach(Tuple<int, int> pos in currentPiece.Components){
+                    if (pos.Item1 + currentPiece.Position.Item1 >= 90)
+                    {
+                        return;
+                    }
+                }
                 currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
             }
             else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
             {
+                //checking if there is place to move the piece
+                foreach (Tuple<int, int> pos in currentPiece.Components)
+                {
+                    if (pos.Item1 + currentPiece.Position.Item1 <= 0)
+                    {
+                        return;
+                    }
+                }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
             }
             //else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)

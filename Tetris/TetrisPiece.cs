@@ -29,7 +29,6 @@ namespace Tetris
                 {
                     graphics.FillRectangle(brush, new Rectangle((position.Item1 + component.Item1) * scale, (position.Item2 + component.Item2) * scale, 10 * scale, 10 * scale));
                 }
-                graphics.FillRectangle(Brushes.Black, new Rectangle((position.Item1 + this.Center.Item1 - 2) * scale, (position.Item2 + this.Center.Item2 - 2) * scale, 4, 4));
             }
         }
         public bool Fall(List<TetrisPiece> pieces)
@@ -56,13 +55,11 @@ namespace Tetris
                     }
                 }
                 //hit the floor
-                System.Diagnostics.Debug.WriteLine(pos.Item2 + Position.Item2);
                 if (pos.Item2 + Position.Item2 >= 190)
                 {
                     landed = true;
                 }
             }
-            System.Diagnostics.Debug.WriteLine(landed);
             return landed;
         }
         public void Rotate()
