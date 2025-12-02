@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Timers;
 
@@ -138,6 +139,9 @@ namespace Tetris
                 pieces.Add(currentPiece);
                 currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
             }
+
+            //checking for full lines
+            CheckLines();
         }
         private void paintScene(Graphics g)
         {
@@ -173,15 +177,68 @@ namespace Tetris
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
             }
-            //else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
-            //{
-            //    currentPiece.Position = new(currentPiece.Position.Item1, currentPiece.Position.Item2 + 10);
-            //}
+            else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            {
+                if (currentPiece.Fall(pieces))
+                {
+                    pieces.Add(currentPiece);
+                    currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+                }
+            }
 
             //rotation
             else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
             {
                 currentPiece.Rotate();
+            }
+        }
+
+        private void CheckLines()
+        {
+           for (int i = 0; i < 20; i++)
+            {
+                int onLine = 0;
+                foreach(TetrisPiece piece in pieces)
+                {
+                    foreach(Tuple<int, int> pos in piece.Components)
+                    {
+                        if (pos.Item2 + piece.Position.Item2 == i * 10)
+                        {
+                            onLine++;
+                        }
+                    }
+                }
+                Debug.WriteLine(onLine);
+                if (onLine >= 10)
+                {
+                    //line is full
+                    //removing the line
+                    foreach (TetrisPiece piece in pieces)
+                    {
+                        List<Tuple<int, int>> newComponents = new List<Tuple<int, int>>();
+                        foreach (Tuple<int, int> pos in piece.Components)
+                        {
+                            if (pos.Item2 + piece.Position.Item2 == i * 10)
+                            {
+                                //skipping this component to remove it
+                                continue;
+                            }
+                            newComponents.Add(pos);
+                        }
+                        piece.Components = newComponents;
+                    }
+                    //moving down pieces above the line
+                    foreach (TetrisPiece piece in pieces)
+                    {
+                        foreach (Tuple<int, int> pos in piece.Components)
+                        {
+                            if (pos.Item2 + piece.Position.Item2 < i * 10)
+                            {
+                                piece.Position = new(piece.Position.Item1, piece.Position.Item2 + 10);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
