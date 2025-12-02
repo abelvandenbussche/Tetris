@@ -9,6 +9,10 @@ namespace Tetris
         const int scale = 2;
         TetrisPiece currentPiece;
         List<TetrisPiece> pieces = new List<TetrisPiece>();
+        TetrisPiece[] nextPieces = new TetrisPiece[3];
+        TetrisPiece? holdPiece = null;
+
+        Random random = new Random();
 
         private void setupGameLoop()
         {
@@ -88,19 +92,21 @@ namespace Tetris
             setupGameLoop();
             //setting the components to the right size
             MainPictureBox.Size = new Size(10 * 10 * scale + 1, 10 * 20 * scale + 1);
-            currentPiece = SpawnPiece(2);
             this.KeyDown += Form1_KeyDown;
+
+
+            nextPieces[0] = SpawnPiece(random.Next(0, pieceTemplates.Count));
+            nextPieces[1] = SpawnPiece(random.Next(0, pieceTemplates.Count));
+            nextPieces[2] = SpawnPiece(random.Next(0, pieceTemplates.Count));
+            currentPiece = SpawnPiece(random.Next(0, pieceTemplates.Count));
         }
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            pieceTemplates[0].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 50));
-            pieceTemplates[1].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 80));
-            pieceTemplates[2].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 110));
-            pieceTemplates[3].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 140));
-            pieceTemplates[4].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 170));
-            pieceTemplates[5].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 200));
-            pieceTemplates[6].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 230));
+            foreach(TetrisPiece piece in nextPieces)
+            {
+                piece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(50, nextPieces.ToList().IndexOf(piece) * 60 + 20));
+            }
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
@@ -137,7 +143,7 @@ namespace Tetris
             {
                 //the piece has landed
                 pieces.Add(currentPiece);
-                currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+                currentPiece = GetNextPiece();
             }
 
             //checking for full lines
@@ -182,7 +188,7 @@ namespace Tetris
                 if (currentPiece.Fall(pieces))
                 {
                     pieces.Add(currentPiece);
-                    currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+                    currentPiece = GetNextPiece();
                 }
             }
 
@@ -192,7 +198,16 @@ namespace Tetris
                 currentPiece.Rotate();
             }
         }
-
+        private TetrisPiece GetNextPiece()
+        {
+            TetrisPiece nextPiece = nextPieces[0];
+            //shifting the next pieces
+            nextPieces[0] = nextPieces[1];
+            nextPieces[1] = nextPieces[2];
+            nextPieces[2] = SpawnPiece(random.Next(0, pieceTemplates.Count));
+            PreviewPictureBox.Invalidate();
+            return nextPiece;
+        }
         private void CheckLines()
         {
            for (int i = 0; i < 20; i++)
