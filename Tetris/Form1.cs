@@ -198,6 +198,11 @@ namespace Tetris
                     currentPiece = GetNextPiece();
                 }
             }
+            //rotation
+            else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
+            {
+                currentPiece.Rotate();
+            }
             //hold piece
             else if (e.KeyCode == Keys.C) {
                 if (holdPiece == null)
@@ -223,11 +228,6 @@ namespace Tetris
                 currentPiece = GetNextPiece();
             }
 
-            //rotation
-            else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
-            {
-                currentPiece.Rotate();
-            }
         }
         private TetrisPiece GetNextPiece()
         {
