@@ -183,7 +183,7 @@ namespace Tetris
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
             }
-            else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
+            else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Q)
             {
                 //checking if there is place to move the piece
                 foreach (Tuple<int, int> pos in currentPiece.Components)
@@ -259,7 +259,6 @@ namespace Tetris
                         }
                     }
                 }
-                Debug.WriteLine(onLine);
                 if (onLine >= 10)
                 {
                     //line is full
