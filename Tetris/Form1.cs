@@ -13,6 +13,7 @@ namespace Tetris
         TetrisPiece? holdPiece = null;
         int score = 0;
         int level = 1;
+        int totalLinesCleared = 0;
 
         Random random = new Random();
 
@@ -105,7 +106,7 @@ namespace Tetris
             PreviewPictureBox.Location = new(24 + HoldPictureBox.Size.Width + MainPictureBox.Size.Width, 12);
 
             //making the screen fit a minimum size
- 
+
             this.KeyDown += Form1_KeyDown;
 
 
@@ -243,7 +244,8 @@ namespace Tetris
                 currentPiece.Rotate();
             }
             //hold piece
-            else if (e.KeyCode == Keys.C) {
+            else if (e.KeyCode == Keys.C)
+            {
                 if (holdPiece == null)
                 {
                     holdPiece = currentPiece;
@@ -325,23 +327,32 @@ namespace Tetris
             if (LinesCleared == 2) { score += 300 * level; } //Double
             if (LinesCleared == 3) { score += 500 * level; } //Triple
             if (LinesCleared == 4) { score += 800 * level; } //Tetris
+
+            totalLinesCleared += LinesCleared;
+
+            //updating the level if needed
+            if (totalLinesCleared == (level * 10))
+            {
+                level++;
+            }
+            LinesClearedLabel.Text = "Lines cleared: " + totalLinesCleared;
         }
         private TetrisPiece GetGhost()
         {
             TetrisPiece ghostPiece = currentPiece.ShallowCopy();
-            while (!ghostPiece.Fall(pieces)) {  }
+            while (!ghostPiece.Fall(pieces)) { }
             ghostPiece.PieceColor = Color.FromArgb(100, ghostPiece.PieceColor.R, ghostPiece.PieceColor.G, ghostPiece.PieceColor.B);
             return ghostPiece;
         }
         private bool CheckFail()
         {
-            foreach(TetrisPiece piece in pieces)
+            foreach (TetrisPiece piece in pieces)
             {
-                foreach(Tuple<int, int> comp in piece.Components)
+                foreach (Tuple<int, int> comp in piece.Components)
                 {
                     if (comp.Item2 + piece.Position.Item2 == 0)
                     {
-                        return true   ;
+                        return true;
                     }
                 }
             }

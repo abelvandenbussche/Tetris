@@ -33,6 +33,7 @@
             HoldPictureBox = new PictureBox();
             Scorelabel = new Label();
             label1 = new Label();
+            LinesClearedLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MainPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)HoldPictureBox).BeginInit();
@@ -70,7 +71,7 @@
             // 
             Scorelabel.AutoSize = true;
             Scorelabel.Font = new Font("Segoe UI", 15F);
-            Scorelabel.Location = new Point(12, 159);
+            Scorelabel.Location = new Point(12, 112);
             Scorelabel.Margin = new Padding(2, 0, 2, 0);
             Scorelabel.Name = "Scorelabel";
             Scorelabel.Size = new Size(23, 28);
@@ -81,17 +82,28 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 20F);
-            label1.Location = new Point(11, 111);
+            label1.Location = new Point(12, 75);
             label1.Name = "label1";
             label1.Size = new Size(88, 37);
             label1.TabIndex = 4;
             label1.Text = "Score:";
+            // 
+            // LinesClearedLabel
+            // 
+            LinesClearedLabel.AutoSize = true;
+            LinesClearedLabel.Font = new Font("Segoe UI", 10F);
+            LinesClearedLabel.Location = new Point(12, 140);
+            LinesClearedLabel.Name = "LinesClearedLabel";
+            LinesClearedLabel.Size = new Size(105, 19);
+            LinesClearedLabel.TabIndex = 5;
+            LinesClearedLabel.Text = "Lines Cleared: 0";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(456, 265);
+            Controls.Add(LinesClearedLabel);
             Controls.Add(label1);
             Controls.Add(Scorelabel);
             Controls.Add(HoldPictureBox);
@@ -114,5 +126,6 @@
         private PictureBox HoldPictureBox;
         private Label Scorelabel;
         private Label label1;
+        private Label LinesClearedLabel;
     }
 }
