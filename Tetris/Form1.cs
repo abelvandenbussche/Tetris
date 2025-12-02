@@ -1,6 +1,4 @@
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Timers;
 
 namespace Tetris
 {
@@ -27,7 +25,7 @@ namespace Tetris
 
         //templates for the tetris pieces
         List<TetrisPiece> pieceTemplates = new List<TetrisPiece>()
-        
+
         {
             //straight piece
             new TetrisPiece(new List<Tuple<int, int>>()
@@ -103,7 +101,7 @@ namespace Tetris
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            foreach(TetrisPiece piece in nextPieces)
+            foreach (TetrisPiece piece in nextPieces)
             {
                 piece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(50, nextPieces.ToList().IndexOf(piece) * 60 + 20));
             }
@@ -113,7 +111,7 @@ namespace Tetris
         {
             //painting the grid
             Graphics g = e.Graphics;
-            using(Pen p = new(Color.Black))
+            using (Pen p = new(Color.Black))
             {
                 for (int y = 0; y < 20; y++)
                 {
@@ -151,9 +149,9 @@ namespace Tetris
         }
         private void paintScene(Graphics g)
         {
-            foreach(TetrisPiece piece in pieces)
+            foreach (TetrisPiece piece in pieces)
             {
-                    piece.DrawSelf(g, scale);
+                piece.DrawSelf(g, scale);
             }
             currentPiece.DrawSelf(g, scale);
         }
@@ -163,7 +161,8 @@ namespace Tetris
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 //checking if there is place to move the piece
-                foreach(Tuple<int, int> pos in currentPiece.Components){
+                foreach (Tuple<int, int> pos in currentPiece.Components)
+                {
                     if (pos.Item1 + currentPiece.Position.Item1 >= 90)
                     {
                         return;
@@ -210,12 +209,12 @@ namespace Tetris
         }
         private void CheckLines()
         {
-           for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
                 int onLine = 0;
-                foreach(TetrisPiece piece in pieces)
+                foreach (TetrisPiece piece in pieces)
                 {
-                    foreach(Tuple<int, int> pos in piece.Components)
+                    foreach (Tuple<int, int> pos in piece.Components)
                     {
                         if (pos.Item2 + piece.Position.Item2 == i * 10)
                         {
