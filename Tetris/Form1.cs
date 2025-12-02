@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Tetris
 {
@@ -162,6 +163,10 @@ namespace Tetris
                 piece.DrawSelf(g, scale);
             }
             currentPiece.DrawSelf(g, scale);
+
+            //drawing the ghost piece
+            TetrisPiece ghost = GetGhost();
+            ghost.DrawSelf(g, scale, ghost.Position);
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -286,6 +291,13 @@ namespace Tetris
                     }
                 }
             }
+        }
+        private TetrisPiece GetGhost()
+        {
+            TetrisPiece ghostPiece = currentPiece.ShallowCopy();
+            while (!ghostPiece.Fall(pieces)) {  }
+            ghostPiece.PieceColor = Color.FromArgb(100, ghostPiece.PieceColor.R, ghostPiece.PieceColor.G, ghostPiece.PieceColor.B);
+            return ghostPiece;
         }
     }
 }
