@@ -87,7 +87,8 @@ namespace Tetris
             setupGameLoop();
             //setting the components to the right size
             MainPictureBox.Size = new Size(10 * 10 * scale + 1, 10 * 20 * scale + 1);
-            SpawnPiece(0);
+            currentPiece = SpawnPiece(0);
+            this.KeyDown += Form1_KeyDown;
         }
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
@@ -118,22 +119,26 @@ namespace Tetris
             paintScene(e.Graphics);
         }
 
-        private void SpawnPiece(int piece)
+        private TetrisPiece SpawnPiece(int piece)
         {
             //adding it to the list
             TetrisPiece newPiece = pieceTemplates[piece].ShallowCopy();
             newPiece.Position = new(10, 0);
-            currentPiece = newPiece;
+            return newPiece;
         }
-        
+
         private void GameLoop(object sender, EventArgs e)
         {
             MainPictureBox.Invalidate();
             //moving the current piece
             MainPictureBox.Invalidate();
-            currentPiece.Fall(pieces);
+            if (currentPiece.Fall(pieces))
+            {
+                //the piece has landed
+                pieces.Add(currentPiece);
+                currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+            }
         }
-
         private void paintScene(Graphics g)
         {
             foreach(TetrisPiece piece in pieces)
@@ -141,6 +146,28 @@ namespace Tetris
                     piece.DrawSelf(g, scale);
             }
             currentPiece.DrawSelf(g, scale);
+        }
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            //movement
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
+            {
+                currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
+            }
+            else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
+            {
+                currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
+            }
+            //else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            //{
+            //    currentPiece.Position = new(currentPiece.Position.Item1, currentPiece.Position.Item2 + 10);
+            //}
+
+            //rotation
+            else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
+            {
+                currentPiece.Rotate();
+            }
         }
     }
 }

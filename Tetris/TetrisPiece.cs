@@ -37,25 +37,46 @@ namespace Tetris
             bool landed = false;
             this.Position = new(this.Position.Item1, this.Position.Item2 + 10);
             //checking if there is a piece under it now
-            foreach(TetrisPiece piece in pieces)
+            foreach(Tuple<int, int> pos in this.Components)
             {
-                //checking if the piece is not the current piece
-                if (piece.Equals(this))
+                foreach(TetrisPiece piece in pieces)
                 {
-                    continue;
-                }
-                foreach(Tuple<int, int> pos in this.Components)
-                {
+                    //checking if the piece is not the current piece
+                    if (piece.Equals(this))
+                    {
+                        continue;
+                    }
                     foreach(Tuple<int, int> otherPos in piece.Components)
                     {
-                        if (otherPos.Item1 == pos.Item1 &&  otherPos.Item2 == pos.Item2 + 10 || pos.Item2 == 50)
+                        //hit other pieces
+                        if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + Position.Item1 && otherPos.Item2 + piece.Position.Item2 == pos.Item2 + Position.Item2 + 10)
                         {
                             landed = true;
                         }
                     }
                 }
+                //hit the floor
+                System.Diagnostics.Debug.WriteLine(pos.Item2 + Position.Item2);
+                if (pos.Item2 + Position.Item2 >= 190)
+                {
+                    landed = true;
+                }
             }
+            System.Diagnostics.Debug.WriteLine(landed);
             return landed;
+        }
+        public void Rotate()
+        {
+            List<Tuple<int, int>> newComponents = new();
+            foreach(Tuple<int, int> component in Components)
+            {
+                int relativeX = component.Item1 - Center.Item1;
+                int relativeY = component.Item2 - Center.Item2;
+                int rotatedX = -relativeY + Center.Item1;
+                int rotatedY = relativeX + Center.Item2;
+                newComponents.Add(new Tuple<int, int>(rotatedX, rotatedY));
+            }
+            Components = newComponents;
         }
     }
 }
