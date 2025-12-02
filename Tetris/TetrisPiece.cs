@@ -1,3 +1,5 @@
+using System.Drawing.Text;
+
 namespace Tetris
 {
     public class TetrisPiece
@@ -31,34 +33,47 @@ namespace Tetris
         }
         public bool Fall(List<TetrisPiece> pieces)
         {
-            bool landed = false;
-            this.Position = new(this.Position.Item1, this.Position.Item2 + 10);
-            //checking if there is a piece under it now
-            foreach (Tuple<int, int> pos in this.Components)
+            //checks if the piece has landed
+            bool CheckLanded()
             {
-                foreach (TetrisPiece piece in pieces)
+                bool landed = false;
+                foreach (Tuple<int, int> pos in this.Components)
                 {
-                    //checking if the piece is not the current piece
-                    if (piece.Equals(this))
+                    foreach (TetrisPiece piece in pieces)
                     {
-                        continue;
-                    }
-                    foreach (Tuple<int, int> otherPos in piece.Components)
-                    {
-                        //hit other pieces
-                        if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + Position.Item1 && otherPos.Item2 + piece.Position.Item2 == pos.Item2 + Position.Item2 + 10)
+                        //checking if the piece is not the current piece
+                        if (piece.Equals(this))
                         {
-                            landed = true;
+                            continue;
+                        }
+                        foreach (Tuple<int, int> otherPos in piece.Components)
+                        {
+                            //hit other pieces
+                            if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + Position.Item1 && otherPos.Item2 + piece.Position.Item2 == pos.Item2 + Position.Item2 + 10)
+                            {
+                                landed = true;
+                            }
                         }
                     }
+                    //hit the floor
+                    if (pos.Item2 + Position.Item2 >= 190)
+                    {
+                        landed = true;
+                    }
                 }
-                //hit the floor
-                if (pos.Item2 + Position.Item2 >= 190)
-                {
-                    landed = true;
-                }
+                return landed;
             }
-            return landed;
+
+            //checking if something went wrong with the previous code
+            // - ChatGPT
+            if (CheckLanded() )
+            {
+                return true;
+            }
+            this.Position = new(this.Position.Item1, this.Position.Item2 + 10);
+            //checking if there is a piece under it now
+            
+            return CheckLanded();
         }
         public void Rotate()
         {
