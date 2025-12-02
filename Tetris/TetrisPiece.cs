@@ -19,7 +19,7 @@ namespace Tetris
         {
             return (TetrisPiece)this.MemberwiseClone();
         }
-        public void DrawSelf(Graphics graphics, Tuple<int, int> position=null!)
+        public void DrawSelf(Graphics graphics, int scale, Tuple<int, int> position=null!)
         {
             //if the position is null it is changed to the objects postion
             position ??= this.Position;
@@ -27,31 +27,28 @@ namespace Tetris
             {
                 foreach(Tuple<int, int> component in Components)
                 {
-                    graphics.FillRectangle(brush, new Rectangle(position.Item1 + component.Item1, position.Item2 + component.Item2, 10, 10));
+                    graphics.FillRectangle(brush, new Rectangle((position.Item1 + component.Item1) * scale, (position.Item2 + component.Item2) * scale, 10 * scale, 10 * scale));
                 }
-                graphics.FillRectangle(Brushes.Black, new Rectangle(position.Item1 + this.Center.Item1 - 2, position.Item2 + this.Center.Item2 - 2, 4, 4));
+                graphics.FillRectangle(Brushes.Black, new Rectangle((position.Item1 + this.Center.Item1 - 2) * scale, (position.Item2 + this.Center.Item2 - 2) * scale, 4, 4));
             }
         }
         public bool Fall(List<TetrisPiece> pieces)
         {
             bool landed = false;
-            for(int index = 0; index < Components.Count; index++)
+            this.Position = new(this.Position.Item1, this.Position.Item2 + 10);
+            //checking if there is a piece under it now
+            foreach(TetrisPiece piece in pieces)
             {
-                Tuple<int, int> pos = Components[index];
-                pos = new(pos.Item1, pos.Item2 + 10);
-
-                //checking if there is a piece under it now
-                foreach(TetrisPiece piece in pieces)
+                //checking if the piece is not the current piece
+                if (piece.Equals(this))
                 {
-                    //checking if the piece is not the current piece
-                    if (piece.Equals(this))
-                    {
-                        continue;
-                    }
-
+                    continue;
+                }
+                foreach(Tuple<int, int> pos in this.Components)
+                {
                     foreach(Tuple<int, int> otherPos in piece.Components)
                     {
-                        if (otherPos.Item1 == pos.Item1 &&  otherPos.Item2 == pos.Item2 + 10)
+                        if (otherPos.Item1 == pos.Item1 &&  otherPos.Item2 == pos.Item2 + 10 || pos.Item2 == 50)
                         {
                             landed = true;
                         }

@@ -5,7 +5,7 @@ namespace Tetris
 {
     public partial class Form1 : Form
     {
-        const int scale = 10;
+        const int scale = 2;
         TetrisPiece currentPiece;
         List<TetrisPiece> pieces = new List<TetrisPiece>();
 
@@ -13,9 +13,10 @@ namespace Tetris
         {
 
             System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
-            const int updateInterval = 16;
+            const int updateInterval = 64;
             frameTimer.Interval = updateInterval;
             frameTimer.Tick += GameLoop;
+            frameTimer.Start();
         }
 
 
@@ -83,19 +84,21 @@ namespace Tetris
         public Form1()
         {
             InitializeComponent();
+            setupGameLoop();
             //setting the components to the right size
-            MainPictureBox.Size = new Size(10*10*scale, 10*20*scale);
+            MainPictureBox.Size = new Size(10 * 10 * scale + 1, 10 * 20 * scale + 1);
+            SpawnPiece(0);
         }
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            pieceTemplates[0].DrawSelf(e.Graphics, new Tuple<int, int>(20, 50));
-            pieceTemplates[1].DrawSelf(e.Graphics, new Tuple<int, int>(20, 80));
-            pieceTemplates[2].DrawSelf(e.Graphics, new Tuple<int, int>(20, 110));
-            pieceTemplates[3].DrawSelf(e.Graphics, new Tuple<int, int>(20, 140));
-            pieceTemplates[4].DrawSelf(e.Graphics, new Tuple<int, int>(20, 170));
-            pieceTemplates[5].DrawSelf(e.Graphics, new Tuple<int, int>(20, 200));
-            pieceTemplates[6].DrawSelf(e.Graphics, new Tuple<int, int>(20, 230));
+            pieceTemplates[0].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 50));
+            pieceTemplates[1].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 80));
+            pieceTemplates[2].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 110));
+            pieceTemplates[3].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 140));
+            pieceTemplates[4].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 170));
+            pieceTemplates[5].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 200));
+            pieceTemplates[6].DrawSelf(e.Graphics, scale, new Tuple<int, int>(20, 230));
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
@@ -108,10 +111,11 @@ namespace Tetris
                 {
                     for (int x = 0; x < 10; x++)
                     {
-                        g.DrawRectangle(p, new(x*scale, y*scale, 10 * scale, 10 * scale));
+                        g.DrawRectangle(p, new(x * 10 * scale, y * 10 * scale, 10 * scale, 10 * scale));
                     }
                 }
             }
+            paintScene(e.Graphics);
         }
 
         private void SpawnPiece(int piece)
@@ -119,24 +123,24 @@ namespace Tetris
             //adding it to the list
             TetrisPiece newPiece = pieceTemplates[piece].ShallowCopy();
             newPiece.Position = new(10, 0);
-            pieces.Add(newPiece);
+            currentPiece = newPiece;
         }
         
         private void GameLoop(object sender, EventArgs e)
         {
+            MainPictureBox.Invalidate();
             //moving the current piece
-            paintScene();
+            MainPictureBox.Invalidate();
+            currentPiece.Fall(pieces);
         }
 
-        private void paintScene()
+        private void paintScene(Graphics g)
         {
             foreach(TetrisPiece piece in pieces)
             {
-                using (Graphics g = MainPictureBox.CreateGraphics())
-                {
-                    piece.DrawSelf(g);
-                }
+                    piece.DrawSelf(g, scale);
             }
+            currentPiece.DrawSelf(g, scale);
         }
     }
 }

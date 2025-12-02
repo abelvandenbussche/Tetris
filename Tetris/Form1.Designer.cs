@@ -38,40 +38,40 @@
             // 
             // PreviewPictureBox
             // 
-            PreviewPictureBox.Location = new Point(400, 12);
-            PreviewPictureBox.Margin = new Padding(2);
+            PreviewPictureBox.Location = new Point(571, 20);
             PreviewPictureBox.Name = "PreviewPictureBox";
-            PreviewPictureBox.Size = new Size(75, 150);
+            PreviewPictureBox.Size = new Size(184, 366);
             PreviewPictureBox.TabIndex = 0;
             PreviewPictureBox.TabStop = false;
             PreviewPictureBox.Paint += PreviewPictureBox_Paint;
             // 
             // MainPictureBox
             // 
-            MainPictureBox.Location = new Point(159, 12);
+            MainPictureBox.Location = new Point(227, 20);
+            MainPictureBox.Margin = new Padding(4, 5, 4, 5);
             MainPictureBox.Name = "MainPictureBox";
-            MainPictureBox.Size = new Size(191, 246);
+            MainPictureBox.Size = new Size(273, 410);
             MainPictureBox.TabIndex = 1;
             MainPictureBox.TabStop = false;
             MainPictureBox.Paint += MainPictureBox_Paint;
             // 
             // HoldPictureBox
             // 
-            HoldPictureBox.Location = new Point(34, 40);
+            HoldPictureBox.Location = new Point(49, 67);
+            HoldPictureBox.Margin = new Padding(4, 5, 4, 5);
             HoldPictureBox.Name = "HoldPictureBox";
-            HoldPictureBox.Size = new Size(75, 75);
+            HoldPictureBox.Size = new Size(107, 125);
             HoldPictureBox.TabIndex = 2;
             HoldPictureBox.TabStop = false;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(560, 270);
+            ClientSize = new Size(800, 450);
             Controls.Add(HoldPictureBox);
             Controls.Add(MainPictureBox);
             Controls.Add(PreviewPictureBox);
-            Margin = new Padding(2);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).EndInit();
