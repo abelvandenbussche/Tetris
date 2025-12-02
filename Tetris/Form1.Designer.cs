@@ -32,6 +32,7 @@
             MainPictureBox = new PictureBox();
             HoldPictureBox = new PictureBox();
             Scorelabel = new Label();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MainPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)HoldPictureBox).BeginInit();
@@ -39,29 +40,28 @@
             // 
             // PreviewPictureBox
             // 
-            PreviewPictureBox.Location = new Point(571, 20);
+            PreviewPictureBox.Location = new Point(283, 12);
+            PreviewPictureBox.Margin = new Padding(2);
             PreviewPictureBox.Name = "PreviewPictureBox";
-            PreviewPictureBox.Size = new Size(184, 366);
+            PreviewPictureBox.Size = new Size(129, 220);
             PreviewPictureBox.TabIndex = 0;
             PreviewPictureBox.TabStop = false;
             PreviewPictureBox.Paint += PreviewPictureBox_Paint;
             // 
             // MainPictureBox
             // 
-            MainPictureBox.Location = new Point(227, 20);
-            MainPictureBox.Margin = new Padding(4, 5, 4, 5);
+            MainPictureBox.Location = new Point(87, 12);
             MainPictureBox.Name = "MainPictureBox";
-            MainPictureBox.Size = new Size(273, 410);
+            MainPictureBox.Size = new Size(191, 246);
             MainPictureBox.TabIndex = 1;
             MainPictureBox.TabStop = false;
             MainPictureBox.Paint += MainPictureBox_Paint;
             // 
             // HoldPictureBox
             // 
-            HoldPictureBox.Location = new Point(49, 67);
-            HoldPictureBox.Margin = new Padding(4, 5, 4, 5);
+            HoldPictureBox.Location = new Point(12, 12);
             HoldPictureBox.Name = "HoldPictureBox";
-            HoldPictureBox.Size = new Size(100, 100);
+            HoldPictureBox.Size = new Size(70, 60);
             HoldPictureBox.TabIndex = 2;
             HoldPictureBox.TabStop = false;
             HoldPictureBox.Paint += HoldPictureBox_Paint;
@@ -69,21 +69,35 @@
             // Scorelabel
             // 
             Scorelabel.AutoSize = true;
-            Scorelabel.Location = new Point(49, 250);
+            Scorelabel.Font = new Font("Segoe UI", 15F);
+            Scorelabel.Location = new Point(12, 159);
+            Scorelabel.Margin = new Padding(2, 0, 2, 0);
             Scorelabel.Name = "Scorelabel";
-            Scorelabel.Size = new Size(75, 25);
+            Scorelabel.Size = new Size(23, 28);
             Scorelabel.TabIndex = 3;
-            Scorelabel.Text = "Score: 0";
+            Scorelabel.Text = "0";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 20F);
+            label1.Location = new Point(11, 111);
+            label1.Name = "label1";
+            label1.Size = new Size(88, 37);
+            label1.TabIndex = 4;
+            label1.Text = "Score:";
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(456, 265);
+            Controls.Add(label1);
             Controls.Add(Scorelabel);
             Controls.Add(HoldPictureBox);
             Controls.Add(MainPictureBox);
             Controls.Add(PreviewPictureBox);
+            Margin = new Padding(2);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).EndInit();
@@ -99,5 +113,6 @@
         private PictureBox MainPictureBox;
         private PictureBox HoldPictureBox;
         private Label Scorelabel;
+        private Label label1;
     }
 }

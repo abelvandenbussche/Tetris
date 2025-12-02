@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 namespace Tetris
 {
@@ -11,19 +12,9 @@ namespace Tetris
         TetrisPiece[] nextPieces = new TetrisPiece[3];
         TetrisPiece? holdPiece = null;
         int score = 0;
+        int level = 1;
 
         Random random = new Random();
-
-        private void setupGameLoop()
-        {
-
-            System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
-            const int updateInterval = 256;
-            frameTimer.Interval = updateInterval;
-            frameTimer.Tick += GameLoop;
-            frameTimer.Start();
-        }
-
 
         //templates for the tetris pieces
         List<TetrisPiece> pieceTemplates = new List<TetrisPiece>()
@@ -86,12 +77,35 @@ namespace Tetris
                 new(20, 10)
             }, new Tuple<int, int>(15, 15), Color.Red)
         };
+
+        private void setupGameLoop()
+        {
+
+            System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
+            const int updateInterval = 256;
+            frameTimer.Interval = updateInterval;
+            frameTimer.Tick += GameLoop;
+            frameTimer.Start();
+        }
+
+
         public Form1()
         {
             InitializeComponent();
             setupGameLoop();
+            this.Size = new(Math.Max(10 * 10 * scale, this.Size.Width), Math.Max(10 * 20 * scale + 75, this.Size.Height));
             //setting the components to the right size
             MainPictureBox.Size = new Size(10 * 10 * scale + 1, 10 * 20 * scale + 1);
+            PreviewPictureBox.Size = new Size((40 + 10 + 10) * scale, (120 + 30 + 20) * scale);
+            HoldPictureBox.Size = new Size(60 * scale, 60 * scale);
+
+            //moving the components
+            HoldPictureBox.Location = new(12, 12);
+            MainPictureBox.Location = new(12 + HoldPictureBox.Size.Width, 12);
+            PreviewPictureBox.Location = new(24 + HoldPictureBox.Size.Width + MainPictureBox.Size.Width, 12);
+
+            //making the screen fit a minimum size
+ 
             this.KeyDown += Form1_KeyDown;
 
 
@@ -100,12 +114,13 @@ namespace Tetris
             nextPieces[2] = SpawnPiece(random.Next(0, pieceTemplates.Count));
             currentPiece = SpawnPiece(random.Next(0, pieceTemplates.Count));
         }
+
         //this draws everytime the picturebox clears
         private void PreviewPictureBox_Paint(object sender, PaintEventArgs e)
         {
             foreach (TetrisPiece piece in nextPieces)
             {
-                piece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(50, nextPieces.ToList().IndexOf(piece) * 60 + 20));
+                piece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(10, nextPieces.ToList().IndexOf(piece) * 40 + 10));
             }
         }
 
@@ -113,7 +128,7 @@ namespace Tetris
         {
             if (holdPiece != null)
             {
-                holdPiece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(0, 0));
+                holdPiece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(10, 10));
             }
         }
 
@@ -145,7 +160,7 @@ namespace Tetris
         private void GameLoop(object sender, EventArgs e)
         {
             //updating the score label
-            Scorelabel.Text = "Score: " + score.ToString();
+            Scorelabel.Text = score.ToString();
             //redrawing the main picturebox
             MainPictureBox.Invalidate();
             //moving the current piece
@@ -155,6 +170,12 @@ namespace Tetris
                 //the piece has landed
                 pieces.Add(currentPiece);
                 currentPiece = GetNextPiece();
+            }
+
+            //checking for a loss
+            if (CheckFail())
+            {
+                this.Close();
             }
 
             //checking for full lines
@@ -207,11 +228,12 @@ namespace Tetris
                     pieces.Add(currentPiece);
                     currentPiece = GetNextPiece();
                 }
+                score++;
             }
             //hard drop
             else if (e.KeyCode == Keys.Space)
             {
-                while (!currentPiece.Fall(pieces)) { }
+                do { score += 2; } while (!currentPiece.Fall(pieces));
                 pieces.Add(currentPiece);
                 currentPiece = GetNextPiece();
             }
@@ -251,6 +273,7 @@ namespace Tetris
         }
         private void CheckLines()
         {
+            int LinesCleared = 0;
             for (int i = 0; i < 20; i++)
             {
                 int onLine = 0;
@@ -266,6 +289,7 @@ namespace Tetris
                 }
                 if (onLine >= 10)
                 {
+                    LinesCleared++;
                     //line is full
                     //removing the line
                     foreach (TetrisPiece piece in pieces)
@@ -285,16 +309,22 @@ namespace Tetris
                     //moving down pieces above the line
                     foreach (TetrisPiece piece in pieces)
                     {
-                        foreach (Tuple<int, int> pos in piece.Components)
+                        for (int j = 0; j < piece.Components.Count; j++)
                         {
+                            Tuple<int, int> pos = piece.Components[j];
                             if (pos.Item2 + piece.Position.Item2 < i * 10)
                             {
-                                piece.Position = new(piece.Position.Item1, piece.Position.Item2 + 10);
+                                piece.Components[j] = new(pos.Item1, pos.Item2 + 10);
                             }
                         }
                     }
                 }
             }
+            //scoring
+            if (LinesCleared == 1) { score += 100 * level; } //Single
+            if (LinesCleared == 2) { score += 300 * level; } //Double
+            if (LinesCleared == 3) { score += 500 * level; } //Triple
+            if (LinesCleared == 4) { score += 800 * level; } //Tetris
         }
         private TetrisPiece GetGhost()
         {
@@ -302,6 +332,20 @@ namespace Tetris
             while (!ghostPiece.Fall(pieces)) {  }
             ghostPiece.PieceColor = Color.FromArgb(100, ghostPiece.PieceColor.R, ghostPiece.PieceColor.G, ghostPiece.PieceColor.B);
             return ghostPiece;
+        }
+        private bool CheckFail()
+        {
+            foreach(TetrisPiece piece in pieces)
+            {
+                foreach(Tuple<int, int> comp in piece.Components)
+                {
+                    if (comp.Item2 + piece.Position.Item2 == 0)
+                    {
+                        return true   ;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
