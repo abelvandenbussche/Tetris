@@ -10,6 +10,7 @@ namespace Tetris
         List<TetrisPiece> pieces = new List<TetrisPiece>();
         TetrisPiece[] nextPieces = new TetrisPiece[3];
         TetrisPiece? holdPiece = null;
+        int score = 0;
 
         Random random = new Random();
 
@@ -143,6 +144,9 @@ namespace Tetris
 
         private void GameLoop(object sender, EventArgs e)
         {
+            //updating the score label
+            Scorelabel.Text = "Score: " + score.ToString();
+            //redrawing the main picturebox
             MainPictureBox.Invalidate();
             //moving the current piece
             MainPictureBox.Invalidate();
