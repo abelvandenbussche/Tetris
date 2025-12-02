@@ -60,9 +60,10 @@
             HoldPictureBox.Location = new Point(49, 67);
             HoldPictureBox.Margin = new Padding(4, 5, 4, 5);
             HoldPictureBox.Name = "HoldPictureBox";
-            HoldPictureBox.Size = new Size(107, 125);
+            HoldPictureBox.Size = new Size(100, 100);
             HoldPictureBox.TabIndex = 2;
             HoldPictureBox.TabStop = false;
+            HoldPictureBox.Paint += HoldPictureBox_Paint;
             // 
             // Form1
             // 

@@ -107,6 +107,14 @@ namespace Tetris
             }
         }
 
+        private void HoldPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (holdPiece != null)
+            {
+                holdPiece.DrawSelf(e.Graphics, scale, new Tuple<int, int>(0, 0));
+            }
+        }
+
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
             //painting the grid
@@ -189,6 +197,30 @@ namespace Tetris
                     pieces.Add(currentPiece);
                     currentPiece = GetNextPiece();
                 }
+            }
+            //hold piece
+            else if (e.KeyCode == Keys.C) {
+                if (holdPiece == null)
+                {
+                    holdPiece = currentPiece;
+                    currentPiece = GetNextPiece();
+                }
+                else
+                {
+                    TetrisPiece temp = currentPiece;
+                    currentPiece = holdPiece;
+                    holdPiece = temp;
+                    holdPiece.Position = new(50, -10);
+                }
+                //refresh hold picturebox
+                HoldPictureBox.Invalidate();
+            }
+            else if (e.KeyCode == Keys.Space)
+            {
+                //hard drop
+                while (!currentPiece.Fall(pieces)) { }
+                pieces.Add(currentPiece);
+                currentPiece = GetNextPiece();
             }
 
             //rotation
