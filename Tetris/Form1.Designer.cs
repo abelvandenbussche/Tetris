@@ -31,6 +31,7 @@
             PreviewPictureBox = new PictureBox();
             MainPictureBox = new PictureBox();
             HoldPictureBox = new PictureBox();
+            Scorelabel = new Label();
             ((System.ComponentModel.ISupportInitialize)PreviewPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MainPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)HoldPictureBox).BeginInit();
@@ -65,11 +66,21 @@
             HoldPictureBox.TabStop = false;
             HoldPictureBox.Paint += HoldPictureBox_Paint;
             // 
+            // Scorelabel
+            // 
+            Scorelabel.AutoSize = true;
+            Scorelabel.Location = new Point(49, 250);
+            Scorelabel.Name = "Scorelabel";
+            Scorelabel.Size = new Size(75, 25);
+            Scorelabel.TabIndex = 3;
+            Scorelabel.Text = "Score: 0";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(Scorelabel);
             Controls.Add(HoldPictureBox);
             Controls.Add(MainPictureBox);
             Controls.Add(PreviewPictureBox);
@@ -79,6 +90,7 @@
             ((System.ComponentModel.ISupportInitialize)MainPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)HoldPictureBox).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -86,5 +98,6 @@
         private PictureBox PreviewPictureBox;
         private PictureBox MainPictureBox;
         private PictureBox HoldPictureBox;
+        private Label Scorelabel;
     }
 }

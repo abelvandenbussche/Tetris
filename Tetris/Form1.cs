@@ -195,6 +195,7 @@ namespace Tetris
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
             }
+            //sofrt drop
             else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
             {
                 if (currentPiece.Fall(pieces))
@@ -202,6 +203,13 @@ namespace Tetris
                     pieces.Add(currentPiece);
                     currentPiece = GetNextPiece();
                 }
+            }
+            //hard drop
+            else if (e.KeyCode == Keys.Space)
+            {
+                while (!currentPiece.Fall(pieces)) { }
+                pieces.Add(currentPiece);
+                currentPiece = GetNextPiece();
             }
             //rotation
             else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
@@ -224,13 +232,6 @@ namespace Tetris
                 }
                 //refresh hold picturebox
                 HoldPictureBox.Invalidate();
-            }
-            else if (e.KeyCode == Keys.Space)
-            {
-                //hard drop
-                while (!currentPiece.Fall(pieces)) { }
-                pieces.Add(currentPiece);
-                currentPiece = GetNextPiece();
             }
 
         }
