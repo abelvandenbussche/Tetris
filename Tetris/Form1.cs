@@ -87,7 +87,7 @@ namespace Tetris
             setupGameLoop();
             //setting the components to the right size
             MainPictureBox.Size = new Size(10 * 10 * scale + 1, 10 * 20 * scale + 1);
-            currentPiece = SpawnPiece(0);
+            currentPiece = SpawnPiece(2);
             this.KeyDown += Form1_KeyDown;
         }
         //this draws everytime the picturebox clears
@@ -123,7 +123,7 @@ namespace Tetris
         {
             //adding it to the list
             TetrisPiece newPiece = pieceTemplates[piece].ShallowCopy();
-            newPiece.Position = new(10, 0);
+            newPiece.Position = new(40, 50);
             return newPiece;
         }
 
@@ -132,12 +132,12 @@ namespace Tetris
             MainPictureBox.Invalidate();
             //moving the current piece
             MainPictureBox.Invalidate();
-            if (currentPiece.Fall(pieces))
-            {
-                //the piece has landed
-                pieces.Add(currentPiece);
-                currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
-            }
+            //if (currentPiece.Fall(pieces))
+            //{
+            //    //the piece has landed
+            //    pieces.Add(currentPiece);
+            //    currentPiece = SpawnPiece(new Random().Next(0, pieceTemplates.Count));
+            //}
         }
         private void paintScene(Graphics g)
         {

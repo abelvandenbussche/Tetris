@@ -68,12 +68,10 @@ namespace Tetris
         public void Rotate()
         {
             List<Tuple<int, int>> newComponents = new();
-            foreach(Tuple<int, int> component in Components)
+            foreach (Tuple<int, int> component in Components)
             {
-                int relativeX = component.Item1 - Center.Item1;
-                int relativeY = component.Item2 - Center.Item2;
-                int rotatedX = -relativeY + Center.Item1;
-                int rotatedY = relativeX + Center.Item2;
+                int rotatedX = Center.Item1 - (component.Item2 - Center.Item2) - 10;
+                int rotatedY = Center.Item2 + (component.Item1 - Center.Item1);
                 newComponents.Add(new Tuple<int, int>(rotatedX, rotatedY));
             }
             Components = newComponents;
