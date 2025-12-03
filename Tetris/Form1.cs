@@ -15,6 +15,8 @@ namespace Tetris
         int level = 1;
         int totalLinesCleared = 0;
 
+        System.Windows.Forms.Timer frameTimer;
+
         Random random = new Random();
 
         //templates for the tetris pieces
@@ -334,6 +336,8 @@ namespace Tetris
             if (totalLinesCleared == (level * 10))
             {
                 level++;
+                //changing the speed of the game
+                frameTimer.Interval = (int)(frameTimer.Interval * 0.9f);
             }
             LinesClearedLabel.Text = "Lines cleared: " + totalLinesCleared;
         }
