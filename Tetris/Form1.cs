@@ -15,6 +15,11 @@ namespace Tetris
         int level = 1;
         int totalLinesCleared = 0;
 
+        //lock delay to prevent instant locking
+        bool grounded = false;
+        DateTime lockStartTime;
+        const int lockDelayTime = 500; //in milliseconds
+
         System.Windows.Forms.Timer frameTimer;
 
         Random random = new Random();
@@ -168,11 +173,23 @@ namespace Tetris
             MainPictureBox.Invalidate();
             //moving the current piece
             MainPictureBox.Invalidate();
-            if (currentPiece.Fall(pieces))
+            if (!grounded)
             {
-                //the piece has landed
-                pieces.Add(currentPiece);
-                currentPiece = GetNextPiece();
+                if (currentPiece.Fall(pieces))
+                {
+                    grounded = true;
+                    lockStartTime = DateTime.Now;
+                }
+            }
+            else
+            {
+                if ((DateTime.Now - lockStartTime).TotalMilliseconds >= lockDelayTime)
+                {
+                    //the piece has landed and is not locked
+                    grounded = false;
+                    pieces.Add(currentPiece);
+                    currentPiece = GetNextPiece();
+                }
             }
 
             //checking for a loss
@@ -223,7 +240,7 @@ namespace Tetris
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
             }
-            //sofrt drop
+            //soft drop
             else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
             {
                 if (currentPiece.Fall(pieces))
