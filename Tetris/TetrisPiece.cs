@@ -84,6 +84,18 @@ namespace Tetris
                 int rotatedY = Center.Item2 + (component.Item1 - Center.Item1);
                 newComponents.Add(new Tuple<int, int>(rotatedX, rotatedY));
             }
+            //checking if the pieces are not overlapping the borders
+            foreach (Tuple<int, int> component in newComponents)
+            {
+                if (component.Item1 + Position.Item1 < 0)
+                {
+                    Position = new(Position.Item1 + 10, Position.Item2);
+                }
+                else if (component.Item1 + Position.Item1 > 90)
+                {
+                    Position = new(Position.Item1 - 10, Position.Item2);
+                }
+            }
             Components = newComponents;
         }
     }
