@@ -75,8 +75,9 @@ namespace Tetris
             
             return CheckLanded();
         }
-        public void Rotate()
+        public void Rotate(List<TetrisPiece> pieces)
         {
+            List<Tuple<int, int>> oldComponents = Components;
             List<Tuple<int, int>> newComponents = new();
             foreach (Tuple<int, int> component in Components)
             {
@@ -84,9 +85,9 @@ namespace Tetris
                 int rotatedY = Center.Item2 + (component.Item1 - Center.Item1);
                 newComponents.Add(new Tuple<int, int>(rotatedX, rotatedY));
             }
-            //checking if the pieces are not overlapping the borders
             foreach (Tuple<int, int> component in newComponents)
             {
+                //checking if the pieces are not overlapping the borders
                 if (component.Item1 + Position.Item1 < 0)
                 {
                     Position = new(Position.Item1 + 10, Position.Item2);
@@ -95,6 +96,23 @@ namespace Tetris
                 {
                     Position = new(Position.Item1 - 10, Position.Item2);
                 }
+                //checking if we are overlapping other pieces
+                foreach(TetrisPiece otherPiece in pieces)
+                {
+                    if (otherPiece.Equals(this))
+                    {
+                        continue;
+                    }
+                    foreach (Tuple<int, int> otherComponent in otherPiece.Components)
+                    {
+                        if (otherComponent.Item1 + otherPiece.Position.Item1 == component.Item1 + Position.Item1 && otherComponent.Item2 + otherPiece.Position.Item2 == component.Item2 + Position.Item2)
+                        {
+                            //restoring old components
+                            newComponents = oldComponents;
+                        }
+                    }
+                }
+
             }
             Components = newComponents;
         }

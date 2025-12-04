@@ -215,6 +215,10 @@ namespace Tetris
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            void ResetDelay()
+            {
+                lockStartTime = DateTime.Now;
+            }
             //movement
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
@@ -227,6 +231,7 @@ namespace Tetris
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
+                ResetDelay();
             }
             else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Q)
             {
@@ -239,6 +244,7 @@ namespace Tetris
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
+                ResetDelay();
             }
             //soft drop
             else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
@@ -260,7 +266,8 @@ namespace Tetris
             //rotation
             else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Z)
             {
-                currentPiece.Rotate();
+                currentPiece.Rotate(pieces);
+                ResetDelay();
             }
             //hold piece
             else if (e.KeyCode == Keys.C)
