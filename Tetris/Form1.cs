@@ -225,9 +225,22 @@ namespace Tetris
                 //checking if there is place to move the piece
                 foreach (Tuple<int, int> pos in currentPiece.Components)
                 {
+                    //checking the wall
                     if (pos.Item1 + currentPiece.Position.Item1 >= 90)
                     {
                         return;
+                    }
+                    //checking other pieces
+                    foreach(TetrisPiece piece in pieces)
+                    {
+                        foreach (Tuple<int, int> otherPos in piece.Components)
+                        {
+                            if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 + 10 &&
+                                otherPos.Item2 + piece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2)
+                            {
+                                return;
+                            }
+                        }
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
@@ -238,9 +251,22 @@ namespace Tetris
                 //checking if there is place to move the piece
                 foreach (Tuple<int, int> pos in currentPiece.Components)
                 {
+                    //checking the wall
                     if (pos.Item1 + currentPiece.Position.Item1 <= 0)
                     {
                         return;
+                    }
+                    //checking other pieces
+                    foreach(TetrisPiece otherPiece in pieces)
+                    {
+                        foreach(Tuple<int, int> otherPos in otherPiece.Components)
+                        {
+                            if (otherPos.Item1 + otherPiece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 - 10 &&
+                                otherPos.Item2 + otherPiece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2)
+                            {
+                                return;
+                            }
+                        }
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
