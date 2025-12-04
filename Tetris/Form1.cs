@@ -20,7 +20,7 @@ namespace Tetris
         DateTime lockStartTime;
         const int lockDelayTime = 500; //in milliseconds
 
-        System.Windows.Forms.Timer frameTimer;
+        System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
 
         Random random = new Random();
 
@@ -88,8 +88,6 @@ namespace Tetris
 
         private void setupGameLoop()
         {
-
-            System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
             const int updateInterval = 256;
             frameTimer.Interval = updateInterval;
             frameTimer.Tick += GameLoop;
@@ -195,6 +193,8 @@ namespace Tetris
             //checking for a loss
             if (CheckFail())
             {
+                //for debugging purposes
+                Thread.Sleep(5000);
                 this.Close();
             }
 
