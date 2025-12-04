@@ -31,49 +31,49 @@ namespace Tetris
                 }
             }
         }
-        public bool Fall(List<TetrisPiece> pieces)
+       //checks if the piece has landed
+        public bool CheckLanded(List<TetrisPiece> pieces)
         {
-            //checks if the piece has landed
-            bool CheckLanded()
+            bool landed = false;
+            foreach (Tuple<int, int> pos in this.Components)
             {
-                bool landed = false;
-                foreach (Tuple<int, int> pos in this.Components)
+                foreach (TetrisPiece piece in pieces)
                 {
-                    foreach (TetrisPiece piece in pieces)
+                    //checking if the piece is not the current piece
+                    if (piece.Equals(this))
                     {
-                        //checking if the piece is not the current piece
-                        if (piece.Equals(this))
-                        {
-                            continue;
-                        }
-                        foreach (Tuple<int, int> otherPos in piece.Components)
-                        {
-                            //hit other pieces
-                            if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + Position.Item1 && otherPos.Item2 + piece.Position.Item2 == pos.Item2 + Position.Item2 + 10)
-                            {
-                                landed = true;
-                            }
-                        }
+                        continue;
                     }
-                    //hit the floor
-                    if (pos.Item2 + Position.Item2 >= 190)
+                    foreach (Tuple<int, int> otherPos in piece.Components)
                     {
-                        landed = true;
+                        //hit other pieces
+                        if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + Position.Item1 && otherPos.Item2 + piece.Position.Item2 == pos.Item2 + Position.Item2 + 10)
+                        {
+                            landed = true;
+                        }
                     }
                 }
-                return landed;
+                //hit the floor
+                if (pos.Item2 + Position.Item2 >= 190)
+                {
+                    landed = true;
+                }
             }
+            return landed;
+        }
 
+        public bool Fall(List<TetrisPiece> pieces)
+        {
             //checking if something went wrong with the previous code
             // - ChatGPT
-            if (CheckLanded() )
+            if (CheckLanded(pieces) )
             {
                 return true;
             }
             this.Position = new(this.Position.Item1, this.Position.Item2 + 10);
             //checking if there is a piece under it now
             
-            return CheckLanded();
+            return CheckLanded(pieces);
         }
         public void Rotate(List<TetrisPiece> pieces)
         {

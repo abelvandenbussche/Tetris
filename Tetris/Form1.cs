@@ -223,6 +223,7 @@ namespace Tetris
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
             {
                 //checking if there is place to move the piece
+                bool stillGrounded = false;
                 foreach (Tuple<int, int> pos in currentPiece.Components)
                 {
                     //checking the wall
@@ -235,6 +236,12 @@ namespace Tetris
                     {
                         foreach (Tuple<int, int> otherPos in piece.Components)
                         {
+                            //checking if we are still touching the ground
+                            if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 + 10 &&
+                                otherPos.Item2 + piece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2 + 10)
+                            {
+                                stillGrounded = true;
+                            }
                             if (otherPos.Item1 + piece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 + 10 &&
                                 otherPos.Item2 + piece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2)
                             {
@@ -244,11 +251,16 @@ namespace Tetris
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 + 10, currentPiece.Position.Item2);
+                if (grounded && !stillGrounded)
+                {
+                    while (!currentPiece.Fall(pieces)) { }
+                }
                 ResetDelay();
             }
             else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Q)
             {
                 //checking if there is place to move the piece
+                bool stillGrounded = false;
                 foreach (Tuple<int, int> pos in currentPiece.Components)
                 {
                     //checking the wall
@@ -261,6 +273,12 @@ namespace Tetris
                     {
                         foreach(Tuple<int, int> otherPos in otherPiece.Components)
                         {
+                            //checking if we are still touching the ground
+                            if (otherPos.Item1 + otherPiece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 - 10 &&
+                                otherPos.Item2 + otherPiece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2 + 10)
+                            {
+                                stillGrounded = true;
+                            }
                             if (otherPos.Item1 + otherPiece.Position.Item1 == pos.Item1 + currentPiece.Position.Item1 - 10 &&
                                 otherPos.Item2 + otherPiece.Position.Item2 == pos.Item2 + currentPiece.Position.Item2)
                             {
@@ -270,6 +288,10 @@ namespace Tetris
                     }
                 }
                 currentPiece.Position = new(currentPiece.Position.Item1 - 10, currentPiece.Position.Item2);
+                if (grounded && !stillGrounded)
+                {
+                    while (!currentPiece.Fall(pieces)) { }
+                }
                 ResetDelay();
             }
             //soft drop
