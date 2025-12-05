@@ -170,7 +170,6 @@ namespace Tetris
             //redrawing the main picturebox
             MainPictureBox.Invalidate();
             //moving the current piece
-            MainPictureBox.Invalidate();
             if (!grounded)
             {
                 if (currentPiece.Fall(pieces))
